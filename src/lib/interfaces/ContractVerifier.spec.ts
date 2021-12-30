@@ -1,5 +1,5 @@
 import { Hashable } from './index';
-import ContractVerifier from './ContractVerifier';
+import { ContractVerifier } from './ContractVerifier';
 import VerificationError from '../errors/VerificationError';
 import NotExtensiveExampleError from '../errors/NotExtensiveExampleError';
 

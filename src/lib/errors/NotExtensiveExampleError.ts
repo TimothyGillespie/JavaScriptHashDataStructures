@@ -1,7 +1,5 @@
-class NotExtensiveExampleError extends Error {
+export class NotExtensiveExampleError extends Error {
 	constructor(message: string) {
 		super(message);
 	}
 }
-
-export default NotExtensiveExampleError;

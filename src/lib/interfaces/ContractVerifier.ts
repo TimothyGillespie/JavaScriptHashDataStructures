@@ -1,8 +1,8 @@
 import { Hashable } from './Hashable';
-import VerificationError from '../errors/VerificationError';
-import NotExtensiveExampleError from '../errors/NotExtensiveExampleError';
+import {VerificationError} from '../errors';
+import {NotExtensiveExampleError} from '../errors';
 
-class ContractVerifier {
+export class ContractVerifier {
 	testObjects: Hashable[] = [];
 
 	warningWriter = (warning: string) => {
@@ -131,5 +131,3 @@ class ContractVerifier {
 			);
 	}
 }
-
-export default ContractVerifier;

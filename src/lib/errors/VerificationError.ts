@@ -1,6 +1,6 @@
 import { Hashable } from '../interfaces';
 
-class VerificationError extends Error {
+export class VerificationError extends Error {
 	constructor(public method: 'equals' | 'hashCode', public property: string, public offendingObjects: Hashable[]) {
 		super(
 			`The following ${
@@ -10,5 +10,3 @@ class VerificationError extends Error {
 		);
 	}
 }
-
-export default VerificationError;
