@@ -192,6 +192,75 @@ describe('MutableHashMap', () => {
 		});
 	});
 
+	describe('values()', () => {
+		it('terminates right away when there are no entries', () => {
+			for (const _ of map.values()) {
+				throw new Error('Should not reach this!');
+			}
+		});
+
+		it('iterates over a singular value', () => {
+			map.set(new HashObject(3), new ValueObject(3, 'c'));
+			let i = 0;
+			for (const singleValue of map.values()) {
+				expect(singleValue).toEqual(new ValueObject(3, 'c'));
+				i++;
+			}
+
+			expect(i).toBe(1);
+		});
+
+		it('iterates over two values', () => {
+			map.set(new HashObject(3), new ValueObject(3, 'c'));
+			map.set(new HashObject(4), new ValueObject(4, 'd'));
+			let i = 0;
+			for (const singleValue of map.values()) {
+				if (singleValue.a === 3) {
+					expect(singleValue).toEqual(new ValueObject(3, 'c'));
+				} else if (singleValue.a === 4) {
+					expect(singleValue).toEqual(new ValueObject(4, 'd'));
+				} else {
+					throw new Error('Unexpected value found.');
+				}
+
+				i++;
+			}
+
+			expect(i).toBe(2);
+		});
+	});
+
+	describe('keys()', () => {
+		it('terminates right away when there are no entries', () => {
+			for (const _ of map.keys()) {
+				throw new Error('Should not reach this!');
+			}
+		});
+
+		it('iterates over a singular key', () => {
+			map.set(new HashObject(3), new ValueObject(3, 'c'));
+			let i = 0;
+			for (const key of map.keys()) {
+				expect(key).toEqual(new HashObject(3));
+				i++;
+			}
+
+			expect(i).toBe(1);
+		});
+
+		it('iterates over two keys', () => {
+			map.set(new HashObject(3), new ValueObject(3, 'c'));
+			map.set(new HashObject(4), new ValueObject(4, 'd'));
+			let i = 0;
+			for (const key of map.keys()) {
+				expect(key.value === 3 || key.value === 4).toBe(true);
+				i++;
+			}
+
+			expect(i).toBe(2);
+		});
+	});
+
 	it('works with objects fulfilling the interface as well', () => {
 		const objectMap = new MutableHashMap();
 		objectMap.set({ equals: (_) => true, hashCode: () => 3 }, 'some value');

@@ -79,4 +79,16 @@ export class MutableHashMap<K extends Hashable, V> {
 			nextIntermediaryValue = iterator.next();
 		}
 	}
+
+	*values(): Generator<V> {
+		for(const [_, value] of this.entries()) {
+			yield value;
+		}
+	}
+
+	*keys(): Generator<K> {
+		for(const [key, _] of this.entries()) {
+			yield key;
+		}
+	}
 }
