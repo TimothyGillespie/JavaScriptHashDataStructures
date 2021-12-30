@@ -1,4 +1,4 @@
-import {stringToHashCode} from './StringToHashCode';
+import { stringToHashCode } from './StringToHashCode';
 
 describe('stringToHashCode', () => {
 	const someStrings = [
