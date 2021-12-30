@@ -1,1 +1,1 @@
-export {MutableHashMap} from './mutable-hash-map';
+export { MutableHashMap } from './mutable-hash-map';

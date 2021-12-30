@@ -1,6 +1,6 @@
 import { Hashable } from './index';
 import { ContractVerifier } from './ContractVerifier';
-import {VerificationError, NotExtensiveExampleError} from '../errors';
+import { VerificationError, NotExtensiveExampleError } from '../errors';
 
 class ValidHashable implements Hashable {
 	constructor(public value: number) {}

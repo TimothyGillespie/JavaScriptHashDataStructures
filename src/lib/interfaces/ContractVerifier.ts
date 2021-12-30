@@ -1,6 +1,6 @@
 import { Hashable } from './Hashable';
-import {VerificationError} from '../errors';
-import {NotExtensiveExampleError} from '../errors';
+import { VerificationError } from '../errors';
+import { NotExtensiveExampleError } from '../errors';
 
 export class ContractVerifier {
 	testObjects: Hashable[] = [];
