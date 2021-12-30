@@ -194,7 +194,7 @@ describe('MutableHashMap', () => {
 
 	it('works with objects fulfilling the interface as well', () => {
 		const objectMap = new MutableHashMap();
-		objectMap.set({equals: (_) => true, hashCode: () => 3}, 'some value');
-		expect(objectMap.get({equals: (_) => true, hashCode: () => 3})).toBe('some value');
+		objectMap.set({ equals: (_) => true, hashCode: () => 3 }, 'some value');
+		expect(objectMap.get({ equals: (_) => true, hashCode: () => 3 })).toBe('some value');
 	});
 });
