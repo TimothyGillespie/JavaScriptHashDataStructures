@@ -3,6 +3,9 @@
 	"version": "1.0.2",
 	"description": "An alternative to the built-in data structures, as they process objects by reference.",
 	"main": "src/index.ts",
+	"files": [
+		"lib/**/*"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/TimothyGillespie/JavaScriptHashDataStructures.git"
