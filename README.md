@@ -24,7 +24,7 @@ The map will try to look up the value by reference instead of by value.
 # MutableHashMap
 
 This library provides an alternative which provide
-look-ups by value. It does this by requiring you to implement its [src/lib/interfaces/Hashable.ts](Hashable interface) and keep the contract:
+look-ups by value. It does this by requiring you to implement its [Hashable Interface](src/lib/interfaces/Hashable.ts) and keep the contract:
 
 You can then use your class with the MutableHashMap. A simple example may look like this:
 
