@@ -1,91 +1,95 @@
-# Typescript Library Template
-Use the button on the top right (Use this template) to make your own package with this template. This template is licensed under Unlicense. The License is given in the README to avoid accidentally license the template users work.
+# JavaScript Hash Data Structures
 
-| :warning: WARNING          |
-|:----------------------------------------------------------------------|
-| This template automatically runs test and publishes npm packages.     |
+When using the built-in data types of JavaScript one will run into issues when using objects. Consider the following example:
 
-## Customize the package.json
-Change the values in the package.json. Especially those with values enclose in <>, namely:
+```
+const map = new Map();
+const key = {a: 1};
+map.set(a, 'some value');
+```
 
-- name
-- description
-- keywords
-- author
-- license
+We have a map with an object as key. It will now make a difference if we either use our constant `key`, or if we just put
+an object with the same values as `key`:
 
-For more info on the config values see https://docs.npmjs.com/cli/v6/configuring-npm/package-json
+```
+// work and will return 'some value'
+map.get(key);
 
-## Add a LICENSE file
-Add a file called LICENSE to the project root (same folder as the package.json).
-A license is optional, but they make it possible to share your library more easily under legal aspects.
+// will not found the value and return undefined
+map.get({a: 1});
+```
 
-Read more on the issues of not licensing your software here: https://choosealicense.com/no-permission/
+The map will try to look up the value by reference instead of by value. 
 
-The same site can give you an overview of different licenses as well: https://choosealicense.com/
+# MutableHashMap
 
-To add your LICENSE file more easily click in Github in your repository "Add file". Set the file name as LICENSE you
-should then see a button to the right saying "Choose a license template".
+This library provides an alternative which provide
+look-ups by value. It does this by requiring you to implement its [src/lib/interfaces/Hashable.ts](Hashable interface) and keep the contract:
 
-## Install dependencies
-As usual with `npm install` in the project root.
+You can then use your class with the MutableHashMap. A simple example may look like this:
 
-## Create your library
-Start hacking away at your library. A few template examples are presented to give an idea how you can do it. Feel free 
-to deviate though.
+```
+import {Hashable} from '@tgillespie/hash-data-structures'
+class MyClass implements Hashable {
 
-You can run tests and get coverage with `npm test`. You can reformat your code with `npm run format`. For a better 
-developer experience you may want to look into IDE support for prettier and jest.
+	constructor(public value: number) {}
 
-Feel free to change any settings (i.e. test settings) to fit your needs and taste.
+	equals(other: Hashable): boolean {
+		if (!(other instanceof ValidHashable)) return false;
+		return this.value === other.value;
+	}
 
-## Publish you library
-Add a secret to your github repository called `NPM_PUBLISH_TOKEN`. It should contain your npmjs.com Access Token.
-It should be of type `Automation`. When you create a tag with a version pattern it will trigger an automatic publish.
+	hashCode(): number {
+		return this.value;
+	}
 
-The current version is set to 0.0.0 on purpose, in order to get an appropriate version number with the `npm version` 
-command right away. You can publish a major, minor and patch version as follows:
+}
 
-`npm version major` -> 1.0.0 on first run
+const map = new MutableHashMap();
+const key = new MyClass(2);
+map.set(key, 'some value')
 
-`npm version minor` -> 0.1.0 on first run
+// This will still work and return 'some value'
+map.get(key);
 
-`npm version patch` -> 0.0.1 on first run
+// This will now also work and return 'some value' as well
+map.get(new MyClass(2));
+```
 
-The `npm version` command is configured to also push to Github and tag the push commit with the new version as a tag.
-This will trigger the Github action and thus test, lint and publish your package.
+It works without a class as well. However, since we need the `equals` and `hashCode` methods it is not as intuitive. Here an impractical example:
 
-On every push there will also be test triggered automatically.
+```
+const objectMap = new MutableHashMap();
+objectMap.set({equals: (_) => true, hashCode: () => 3}, 'some value');
+expect(objectMap.get({equals: (_) => true, hashCode: () => 3})).toBe('some value');
+```
 
-## Change the README
-This README will not fit your project. Describe your project here instead.
+# How to Design the HashCode
 
-## Question and Improvements
-If you have any improvements or question please leave them as an issue in this repository
+The hashCode method does not need to be collision free and is even expected to have collisions. This design is heavily influenced and inspired by how 
+Java solved this issue, and you can use the same methods. You can also find some ideas here: https://stackoverflow.com/questions/194846/is-there-any-kind-of-hash-code-function-in-javascript
 
-## License
-This is free and unencumbered software released into the public domain.
+# Contract Verifier
 
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any
-means.
+You can verify that you class keeps the contract half-automatically with the `ContractVerifier`. You can use it like this in a jest test case:
 
-In jurisdictions that recognize copyright laws, the author or authors
-of this software dedicate any and all copyright interest in the
-software to the public domain. We make this dedication for the benefit
-of the public at large and to the detriment of our heirs and
-successors. We intend this dedication to be an overt act of
-relinquishment in perpetuity of all present and future rights to this
-software under copyright law.
+```
+class ValidHashable implements Hashable {
+	constructor(public value: number) {}
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
+	equals(other: Hashable): boolean {
+		if (!(other instanceof ValidHashable)) return false;
+		return this.value === other.value;
+	}
 
-For more information, please refer to <https://unlicense.org>
+	hashCode(): number {
+		return this.value;
+	}
+}
 
+const example = [new ValidHashable(1), new ValidHashable(2), new ValidHashable(3)];
+expect(() => new ContractVerifier(example).verifyContract()).not.toThrow();
+```
+
+It will throw an `VerificationError` if one contract property is not held. It will throw an `NotExtensiveExampleError` if it was found that your examples could
+not verify a property (it is not very sophisticated with this, so you should not rely on this too much as of now).
