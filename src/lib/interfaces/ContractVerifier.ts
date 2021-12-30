@@ -1,4 +1,4 @@
-import {Hashable} from './Hashable';
+import { Hashable } from './Hashable';
 import VerificationError from '../errors/VerificationError';
 import NotExtensiveExampleError from '../errors/NotExtensiveExampleError';
 

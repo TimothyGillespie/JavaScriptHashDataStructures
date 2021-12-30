@@ -1,4 +1,4 @@
-import {Hashable} from '../interfaces';
+import { Hashable } from '../interfaces';
 
 class VerificationError extends Error {
 	constructor(public method: 'equals' | 'hashCode', public property: string, public offendingObjects: Hashable[]) {

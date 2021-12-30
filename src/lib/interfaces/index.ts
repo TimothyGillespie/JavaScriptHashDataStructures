@@ -1,2 +1,2 @@
 export * from './ContractVerifier';
-export {Hashable} from './Hashable';
+export { Hashable } from './Hashable';
