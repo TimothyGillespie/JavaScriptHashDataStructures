@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"module": "commonjs",
+		"outDir": "build",
+
+		"strict": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+
+		"esModuleInterop": true,
+
+		"forceConsistentCasingInFileNames": true
+	},
+	"include": ["src"],
+	"exclude": ["node_modules", "**/__tests__/*", "**/*.spec.ts", "**/*.spec.js"]
+}
