@@ -1,4 +1,4 @@
-import stringToHashCode from "./StringToHashCode";
+import stringToHashCode from './StringToHashCode';
 
 describe('stringToHashCode', () => {
 	const someStrings = [
@@ -11,25 +11,22 @@ describe('stringToHashCode', () => {
 		'enfulge',
 		'vlfgnu',
 		'fgvxlc',
-		'mäuprtd' +
-		'auritdn/{}',
+		'mäuprtd' + 'auritdn/{}',
 		'{',
-		'}' +
-		'{})(-::',
+		'}' + '{})(-::',
 	];
-
 
 	it.each(someStrings)('is generally consistent for input %s', (input) => {
 		const expectation = stringToHashCode(input);
-		for(let i = 0; i < 100; i++) {
+		for (let i = 0; i < 100; i++) {
 			expect(stringToHashCode(input)).toBe(expectation);
 		}
 	});
 
 	it('is collision free in the sample set', () => {
-		const hashCodes = someStrings.map(x => stringToHashCode(x));
-		for(const singleHashCode of hashCodes) {
-			expect(hashCodes.filter(x => x === singleHashCode).length).toBe(1);
+		const hashCodes = someStrings.map((x) => stringToHashCode(x));
+		for (const singleHashCode of hashCodes) {
+			expect(hashCodes.filter((x) => x === singleHashCode).length).toBe(1);
 		}
 	});
 
