@@ -1,4 +1,4 @@
-import Hashable from '../interfaces/Hashable';
+import {Hashable} from '../interfaces';
 import { MutableHashMap } from './mutable-hash-map';
 
 class HashObject implements Hashable {

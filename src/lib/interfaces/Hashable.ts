@@ -1,4 +1,4 @@
-interface Hashable {
+export interface Hashable {
 	/**
 	 * Receives another object of any type and returns a boolean indicating the calling object and the passed object are
 	 * equal.
@@ -26,5 +26,3 @@ interface Hashable {
 	 */
 	hashCode: () => number;
 }
-
-export default Hashable;

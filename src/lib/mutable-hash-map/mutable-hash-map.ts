@@ -1,4 +1,4 @@
-import Hashable from '../interfaces/Hashable';
+import {Hashable} from '../interfaces';
 
 export class MutableHashMap<K extends Hashable, V> {
 	private _values: Map<number, { key: K; value: V }[]>;
