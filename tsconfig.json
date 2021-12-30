@@ -2,7 +2,9 @@
 	"compilerOptions": {
 		"target": "es2015",
 		"module": "esnext",
+		"moduleResolution": "node",
 		"outDir": "build",
+		"lib": ["es2017", "dom"],
 
 		"strict": true,
 		"noImplicitAny": true,
