@@ -18,17 +18,21 @@
 		"version": "npm run format && git add -A src",
 		"postversion": "git push && git push --tags"
 	},
-	"keywords": ["data strucutres", "hash map", "hash"],
+	"keywords": [
+		"data strucutres",
+		"hash map",
+		"hash"
+	],
 	"author": "Timothy Gillespie",
 	"license": "GPL-3.0",
 	"devDependencies": {
-		"@types/jest": "^26.0.23",
-		"jest": "^27.0.4",
-		"prettier": "^2.3.1",
-		"ts-jest": "^27.0.3",
-		"ts-node": "^10.0.0",
-		"typescript": "^4.3.2",
+		"@types/jest": "^26.0.24",
+		"jest": "^27.4.5",
+		"prettier": "^2.5.1",
+		"ts-jest": "^27.1.2",
+		"ts-node": "^10.4.0",
 		"tslint": "^6.1.3",
-		"tslint-config-prettier": "^1.18.0"
+		"tslint-config-prettier": "^1.18.0",
+		"typescript": "^4.5.4"
 	}
 }
