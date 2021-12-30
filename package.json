@@ -1,8 +1,12 @@
 {
-	"name": "<package-name>",
+	"name": "@tgillespie/hash-data-structures",
 	"version": "0.0.0",
-	"description": "<Package description>",
+	"description": "An alternative to the built-in data structures, as they process objects by reference.",
 	"main": "index.ts",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/TimothyGillespie/JavaScriptHashDataStructures.git"
+	},
 	"scripts": {
 		"test": "jest",
 		"build": "tsc",
@@ -14,9 +18,9 @@
 		"version": "npm run format && git add -A src",
 		"postversion": "git push && git push --tags"
 	},
-	"keywords": ['<your keywords>'],
-	"author": "<Your Name>",
-	"license": "<Your chosen license - also add LICENSE and possible license headers>",
+	"keywords": ["data strucutres", "hash map", "hash"],
+	"author": "Timothy Gillespie",
+	"license": "GPL-3.0",
 	"devDependencies": {
 		"@types/jest": "^26.0.23",
 		"jest": "^27.0.4",
