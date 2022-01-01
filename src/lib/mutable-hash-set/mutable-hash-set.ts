@@ -1,4 +1,4 @@
-import {Hashable} from "../interfaces";
+import { Hashable } from '../interfaces';
 
 export class MutableHashSet<E extends Hashable> {
 	private _values = new Map<number, E[]>();
@@ -10,13 +10,13 @@ export class MutableHashSet<E extends Hashable> {
 
 	add(element: E): MutableHashSet<E> {
 		const hashCodeCategory = this._values.get(element.hashCode());
-		if(hashCodeCategory === undefined) {
+		if (hashCodeCategory === undefined) {
 			this._values.set(element.hashCode(), [element]);
-			this._size++
+			this._size++;
 		} else {
-			const filteredCategory = hashCodeCategory.filter(x => !x.equals(element));
-			if(filteredCategory.length === hashCodeCategory.length) {
-				this._values.set(element.hashCode(), [...filteredCategory, element])
+			const filteredCategory = hashCodeCategory.filter((x) => !x.equals(element));
+			if (filteredCategory.length === hashCodeCategory.length) {
+				this._values.set(element.hashCode(), [...filteredCategory, element]);
 				this._size++;
 			}
 		}
@@ -26,12 +26,12 @@ export class MutableHashSet<E extends Hashable> {
 
 	delete(element: E): boolean {
 		const hashCodeCategory = this._values.get(element.hashCode());
-		if(hashCodeCategory === undefined) return false;
+		if (hashCodeCategory === undefined) return false;
 
-		const filteredCategory = hashCodeCategory.filter(x => !x.equals(element));
-		this._values.set(element.hashCode(), [...filteredCategory])
+		const filteredCategory = hashCodeCategory.filter((x) => !x.equals(element));
+		this._values.set(element.hashCode(), [...filteredCategory]);
 
-		if(hashCodeCategory.length !== filteredCategory.length) {
+		if (hashCodeCategory.length !== filteredCategory.length) {
 			this._size--;
 			return true;
 		}
@@ -41,9 +41,9 @@ export class MutableHashSet<E extends Hashable> {
 
 	has(element: E): boolean {
 		const hashCodeCategory = this._values.get(element.hashCode());
-		if(hashCodeCategory === undefined) return false;
+		if (hashCodeCategory === undefined) return false;
 
-		const filteredCategory = hashCodeCategory.filter(x => !x.equals(element));
+		const filteredCategory = hashCodeCategory.filter((x) => !x.equals(element));
 		return hashCodeCategory.length !== filteredCategory.length;
 	}
 
@@ -61,7 +61,7 @@ export class MutableHashSet<E extends Hashable> {
 	union(otherMutableHashSet: MutableHashSet<E>): MutableHashSet<E> {
 		const resultSet = this.clone();
 
-		for(const singleElement of otherMutableHashSet.elements()) {
+		for (const singleElement of otherMutableHashSet.elements()) {
 			resultSet.add(singleElement);
 		}
 
@@ -70,8 +70,8 @@ export class MutableHashSet<E extends Hashable> {
 
 	intersection(otherMutableHashSet: MutableHashSet<E>): MutableHashSet<E> {
 		const resultSet = new MutableHashSet<E>();
-		for(const singleElement of this.elements()) {
-			if(otherMutableHashSet.has(singleElement)) resultSet.add(singleElement);
+		for (const singleElement of this.elements()) {
+			if (otherMutableHashSet.has(singleElement)) resultSet.add(singleElement);
 		}
 
 		return resultSet;
@@ -80,7 +80,7 @@ export class MutableHashSet<E extends Hashable> {
 	difference(otherMutableHashSet: MutableHashSet<E>): MutableHashSet<E> {
 		const resultSet = this.clone();
 
-		for(const singleElement of otherMutableHashSet.elements()) {
+		for (const singleElement of otherMutableHashSet.elements()) {
 			resultSet.delete(singleElement);
 		}
 
@@ -97,7 +97,7 @@ export class MutableHashSet<E extends Hashable> {
 	clone(): MutableHashSet<E> {
 		const resultSet = new MutableHashSet<E>();
 
-		for(const singleElement of this.elements()) {
+		for (const singleElement of this.elements()) {
 			resultSet.add(singleElement);
 		}
 

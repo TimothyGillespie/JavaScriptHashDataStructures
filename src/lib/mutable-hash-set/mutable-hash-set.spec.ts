@@ -1,5 +1,5 @@
-import {MutableHashSet} from "./mutable-hash-set";
-import {HashObject} from "../mutable-hash-map/mutable-hash-map.spec";
+import { MutableHashSet } from './mutable-hash-set';
+import { HashObject } from '../mutable-hash-map/mutable-hash-map.spec';
 
 let set: MutableHashSet<HashObject>;
 
@@ -7,12 +7,12 @@ const sortHashObjectArray = (array: HashObject[]) => {
 	const copy = [...array];
 	copy.sort((x, y) => x.value - y.value);
 	return copy;
-}
+};
 
 describe('MutableHashSet', () => {
 	beforeEach(() => {
 		set = new MutableHashSet();
-	})
+	});
 
 	describe('initial state', () => {
 		it('initially has size 0', () => {
@@ -36,7 +36,6 @@ describe('MutableHashSet', () => {
 			set.add(new HashObject(14));
 			expect(set.size).toBe(2);
 		});
-
 
 		it('adding an existing element does not change the size', () => {
 			set.add(new HashObject(1));
@@ -109,7 +108,6 @@ describe('MutableHashSet', () => {
 
 			expect(set.toArray()).toEqual([new HashObject(1)]);
 		});
-
 	});
 
 	describe('has()', () => {
@@ -169,16 +167,13 @@ describe('MutableHashSet', () => {
 	describe('set operations', () => {
 		let otherSet: MutableHashSet<HashObject>;
 		beforeEach(() => {
-			set.add(new HashObject(1))
-				.add(new HashObject(2))
-				.add(new HashObject(4))
-				.add(new HashObject(7));
+			set.add(new HashObject(1)).add(new HashObject(2)).add(new HashObject(4)).add(new HashObject(7));
 
 			otherSet = new MutableHashSet<HashObject>()
 				.add(new HashObject(1))
 				.add(new HashObject(4))
 				.add(new HashObject(5))
-				.add(new HashObject(6))
+				.add(new HashObject(6));
 		});
 
 		it('union() 1', () => {
@@ -249,5 +244,4 @@ describe('MutableHashSet', () => {
 			]);
 		});
 	});
-
 });
