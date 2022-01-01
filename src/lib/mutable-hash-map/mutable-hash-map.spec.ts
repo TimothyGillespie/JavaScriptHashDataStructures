@@ -1,7 +1,7 @@
 import { Hashable } from '../interfaces';
 import { MutableHashMap } from './mutable-hash-map';
 
-class HashObject implements Hashable {
+export class HashObject implements Hashable {
 	constructor(public value: number) {}
 
 	equals(other: Hashable): boolean {
