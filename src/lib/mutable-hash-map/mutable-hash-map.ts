@@ -2,14 +2,18 @@ import { Hashable } from '../interfaces';
 
 export class MutableHashMap<K extends Hashable, V> {
 	private _values: Map<number, { key: K; value: V }[]>;
-	size: number;
+	private _size: number;
+
+	get size(): number {
+		return this._size;
+	}
 
 	constructor() {
 		this._values = new Map();
-		this.size = 0;
+		this._size = 0;
 	}
 
-	set(key: K, value: V): void {
+	set(key: K, value: V): MutableHashMap<K, V> {
 		const initialValue = this._values.get(key.hashCode());
 		if (initialValue === undefined) {
 			this._values.set(key.hashCode(), [
@@ -18,15 +22,17 @@ export class MutableHashMap<K extends Hashable, V> {
 					value,
 				},
 			]);
-			this.size++;
+			this._size++;
 		} else {
 			if (initialValue.find((x) => x.key.equals(key)) === undefined) {
 				this._values.set(key.hashCode(), [...initialValue, { key, value }]);
-				this.size++;
+				this._size++;
 			} else {
 				this._values.set(key.hashCode(), [...initialValue.filter((x) => !x.key.equals(key)), { key, value }]);
 			}
 		}
+
+		return this;
 	}
 
 	get(key: K): V | undefined {
@@ -64,7 +70,7 @@ export class MutableHashMap<K extends Hashable, V> {
 			this._values.set(key.hashCode(), newList);
 		}
 
-		this.size--;
+		this._size--;
 		return true;
 	}
 
