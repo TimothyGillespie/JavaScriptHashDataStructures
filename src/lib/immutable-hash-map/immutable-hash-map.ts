@@ -1,105 +1,112 @@
 import { Hashable } from '../interfaces';
-import {immerable, produce, enableMapSet} from "immer";
+import { immerable, produce, enableMapSet } from 'immer';
 
 export class ImmutableHashMap<K extends Hashable, V> {
-	private _values: Map<number, { key: K; value: V }[]>;
-	private _size: number;
+    private _values: Map<number, { key: K; value: V }[]>;
+    private _size: number;
 
-	[immerable] = true;
+    [immerable] = true;
 
-	get size(): number {
-		return this._size;
-	}
+    get size(): number {
+        return this._size;
+    }
 
-	constructor() {
-		enableMapSet();
-		this._values = new Map();
-		this._size = 0;
-	}
+    constructor(initialEntries: readonly (readonly [K, V])[] = []) {
+        enableMapSet();
+        this._values = new Map();
+        this._size = 0;
 
-	set(key: K, value: V): ImmutableHashMap<K, V> {
-		return produce(this, draft => {
-			const initialValue = this._values.get(key.hashCode());
-			if (initialValue === undefined) {
-				draft['_values'].set(key.hashCode(), [
-					{
-						key,
-						value,
-					},
-				]);
-				draft['_size']++;
-			} else {
-				if (initialValue.find((x) => x.key.equals(key)) === undefined) {
-					draft['_values'].set(key.hashCode(), [...initialValue, { key, value }]);
-					draft['_size']++;
-				} else {
-					draft['_values'].set(key.hashCode(), [...initialValue.filter((x) => !x.key.equals(key)), { key, value }]);
-				}
-			}
-		});
-	}
+        initialEntries.forEach(([key, value]) => {
+            this.set(key, value);
+        });
+    }
 
-	get(key: K): V | undefined {
-		const entryByHashCode = this._values.get(key.hashCode());
-		if (entryByHashCode === undefined) {
-			return undefined;
-		}
+    set(key: K, value: V): ImmutableHashMap<K, V> {
+        return produce(this, (draft) => {
+            const initialValue = this._values.get(key.hashCode());
+            if (initialValue === undefined) {
+                draft['_values'].set(key.hashCode(), [
+                    {
+                        key,
+                        value,
+                    },
+                ]);
+                draft['_size']++;
+            } else {
+                if (initialValue.find((x) => x.key.equals(key)) === undefined) {
+                    draft['_values'].set(key.hashCode(), [...initialValue, { key, value }]);
+                    draft['_size']++;
+                } else {
+                    draft['_values'].set(key.hashCode(), [
+                        ...initialValue.filter((x) => !x.key.equals(key)),
+                        { key, value },
+                    ]);
+                }
+            }
+        });
+    }
 
-		const found = entryByHashCode.find((x) => x.key.equals(key));
-		if (found === undefined) {
-			return undefined;
-		}
+    get(key: K): V | undefined {
+        const entryByHashCode = this._values.get(key.hashCode());
+        if (entryByHashCode === undefined) {
+            return undefined;
+        }
 
-		return found.value;
-	}
+        const found = entryByHashCode.find((x) => x.key.equals(key));
+        if (found === undefined) {
+            return undefined;
+        }
 
-	has(key: K): boolean {
-		return this.get(key) !== undefined;
-	}
+        return found.value;
+    }
 
-	delete(key: K): ImmutableHashMap<K, V> {
-		return produce(this, draft => {
-			const entryByHashCode = this._values.get(key.hashCode());
-			if (entryByHashCode === undefined) {
-				return draft;
-			}
+    has(key: K): boolean {
+        return this.get(key) !== undefined;
+    }
 
-			const newList = entryByHashCode.filter((x) => !x.key.equals(key));
-			if (newList.length === entryByHashCode.length) {
-				return draft;
-			}
+    delete(key: K): ImmutableHashMap<K, V> {
+        return produce(this, (draft) => {
+            const entryByHashCode = this._values.get(key.hashCode());
+            if (entryByHashCode === undefined) {
+                return draft;
+            }
 
-			if (newList.length === 0) {
-				draft['_values'].delete(key.hashCode());
-			} else {
-				draft['_values'].set(key.hashCode(), newList);
-			}
+            const newList = entryByHashCode.filter((x) => !x.key.equals(key));
+            if (newList.length === entryByHashCode.length) {
+                return draft;
+            }
 
-			draft['_size']--;
-		});
-	}
+            if (newList.length === 0) {
+                draft['_values'].delete(key.hashCode());
+            } else {
+                draft['_values'].set(key.hashCode(), newList);
+            }
 
-	*entries(): Generator<[K, V]> {
-		const iterator = this._values.values();
-		let nextIntermediaryValue = iterator.next();
-		while (!nextIntermediaryValue.done) {
-			for (const actualPair of nextIntermediaryValue.value) {
-				const { key: nextKey, value: nextValue } = actualPair;
-				yield [nextKey, nextValue];
-			}
-			nextIntermediaryValue = iterator.next();
-		}
-	}
+            draft['_size']--;
+        });
+    }
 
-	*values(): Generator<V> {
-		for (const [_, value] of this.entries()) {
-			yield value;
-		}
-	}
+    *entries(): Generator<[K, V]> {
+        const iterator = this._values.values();
+        let nextIntermediaryValue = iterator.next();
+        while (!nextIntermediaryValue.done) {
+            for (const actualPair of nextIntermediaryValue.value) {
+                const { key: nextKey, value: nextValue } = actualPair;
+                yield [nextKey, nextValue];
+            }
+            nextIntermediaryValue = iterator.next();
+        }
+    }
 
-	*keys(): Generator<K> {
-		for (const [key, _] of this.entries()) {
-			yield key;
-		}
-	}
+    *values(): Generator<V> {
+        for (const [_, value] of this.entries()) {
+            yield value;
+        }
+    }
+
+    *keys(): Generator<K> {
+        for (const [key, _] of this.entries()) {
+            yield key;
+        }
+    }
 }
